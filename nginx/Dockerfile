@@ -1,4 +1,4 @@
-FROM alpine:3.7 AS pagespeed
+FROM alpine:latest AS pagespeed
 
 # This sadly requires an old version of http://www.libpng.org/pub/png/libpng.html
 ARG LIBPNG_VERSION=1.2.59
@@ -68,7 +68,7 @@ RUN mkdir -p /tmp/ngx_pagespeed/psol && \
     cp -r /tmp/modpagespeed/src/url /tmp/ngx_pagespeed/psol/include/
 
 
-FROM alpine:3.7 AS nginx
+FROM alpine:latest AS nginx
 # Check https://github.com/pagespeed/ngx_pagespeed/releases for the latest version
 
 # Check http://nginx.org/en/download.html for the latest version.
@@ -132,7 +132,7 @@ RUN cd /tmp && \
     make install --silent -j$CPU
 
 
-FROM alpine:3.7
+FROM alpine:latest
 MAINTAINER Nico Berlee <nico@berlee.nl>
 
 RUN apk --no-cache add \

@@ -74,7 +74,6 @@ RUN apk add --update --no-cache \
 	&& mkdir -p /usr/local/var/geoip \
 	&& curl -L -o /usr/local/var/geoip/GeoIPCity.dat.gz http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz \
 	&& gunzip /usr/local/var/geoip/GeoIPCity.dat.gz \
-	&& rm /usr/local/var/geoip/GeoIPCity.dat.gz \
 	&& apk del --no-cache \
 		autoconf \
 		g++ \
@@ -109,7 +108,12 @@ apc.gc_ttl=3600\n\
 apc.max_file_size=1M\n\
 apc.stat=1\n'> /usr/local/etc/php/conf.d/apcu-recommended.ini
 	
-RUN echo $'expose_php=0\n' > /usr/local/etc/php/conf.d/disableexpose.ini
+RUN echo $'max_input_time=60\n\
+max_execution_time=120\n\
+upload_max_filesize=64M\n\
+post_max_size=64M\n\
+memory_limit=256M\n\
+expose_php=0\n' > /usr/local/etc/php/conf.d/disableexpose.ini
 	
 RUN sed -i -e 's/listen.*/listen = 0.0.0.0:9000/' /usr/local/etc/php-fpm.conf
 
